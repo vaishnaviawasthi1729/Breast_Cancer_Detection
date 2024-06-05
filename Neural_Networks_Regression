@@ -1,0 +1,75 @@
+import numpy as np
+from pandas import read_csv
+from keras.models import Sequential
+from keras.layers import Dense
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import confusion_matrix, accuracy_score
+from matplotlib import pyplot as plt
+
+# Load data and arrange into Pandas dataframe
+df = read_csv("breast_cancer.csv")
+
+# Split into features and target (assuming the last column is the target)
+X = df.iloc[:, :-1].values
+y = df.iloc[:, -1].values
+
+# Split into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=20)
+
+# Scale data
+scaler = StandardScaler()
+scaler.fit(X_train)
+
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Define the model
+model = Sequential()
+model.add(Dense(128, input_dim=X_train_scaled.shape[1], activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(1, activation='linear'))
+
+model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mae'])
+model.summary()
+
+# Train the model
+history = model.fit(X_train_scaled, y_train, validation_split=0.2, epochs=100, verbose=0)
+
+# Plot the training and validation loss at each epoch
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.plot(epochs, loss, 'y', label='Training loss')
+plt.plot(epochs, val_loss, 'r', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# Predict on test data
+predictions = model.predict(X_test_scaled)
+print("Predicted values are: ", predictions[:5])
+print("Real values are: ", y_test[:5])
+
+# Custom rounding function to round to nearest 2 or 4
+def custom_round(pred):
+    return 2 if np.abs(pred - 2) < np.abs(pred - 4) else 4
+
+# Apply rounding
+rounded_predictions = np.array([custom_round(pred) for pred in predictions])
+
+# Calculate confusion matrix and accuracy score
+conf_matrix = confusion_matrix(y_test, rounded_predictions)
+accuracy = accuracy_score(y_test, rounded_predictions)*100
+
+print("Confusion Matrix:")
+print(conf_matrix)
+print("\nAccuracy Score: {:.2f}".format(accuracy))
+
+# Comparison with other models..
+# Neural network - from the current code
+mse_neural, mae_neural = model.evaluate(X_test_scaled, y_test, verbose=0)
+print('Mean squared error from neural net: ', mse_neural)
+print('Mean absolute error from neural net: ', mae_neural)
