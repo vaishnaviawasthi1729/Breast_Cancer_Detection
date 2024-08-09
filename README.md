@@ -8,20 +8,21 @@ This project aims to detect breast cancer using two different machine learning a
 **Source**:<br> 
 The dataset used in this project is the Breast Cancer Dataset from Kaggle.
 
+
 **Features**:<br> The dataset contains 30 features (all numerical values), which are used to predict the diagnosis of breast cancer.
 Target Variable: The target variable indicates whether the breast cancer is benign (0) or malignant (1).
+
+
 **Installation**
 To run this project, ensure you have Python installed. You can install the required dependencies by running:
-
-bash
-Copy code
 pip install numpy pandas scikit-learn keras matplotlib
-#**Logistic Regression Model**
-**Data Preprocessing**
-The dataset is loaded using pandas, and then split into features (X) and the target variable (y). The data is further split into training and test sets using an 80-20 split.
 
-python
-Copy code
+
+#**Logistic Regression Model**<br>
+<br>
+**Data Preprocessing**<br>
+The dataset is loaded using pandas, and then split into features (X) and the target variable (y). The data is further split into training and test sets using an 80-20 split.
+<br>
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -30,11 +31,13 @@ X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
-Model Training
-The LogisticRegression model from sklearn is used for binary classification. The model is trained on the pre-processed and scaled training data.
+<br>
 
-python
-Copy code
+
+**Model Training**<br>
+<br>
+The LogisticRegression model from sklearn is used for binary classification. The model is trained on the pre-processed and scaled training data.
+<br>
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
@@ -44,22 +47,25 @@ X_test = sc.transform(X_test)
 
 classifier = LogisticRegression(random_state=0)
 classifier.fit(X_train, y_train)
-Model Evaluation
-The model's performance is evaluated using a confusion matrix, accuracy score, and cross-validation.
 
-python
-Copy code
+
+**Model Evaluation**<br>
+The model's performance is evaluated using a confusion matrix, accuracy score, and cross-validation.
+<br>
 from sklearn.metrics import confusion_matrix, accuracy_score
 
 y_pred = classifier.predict(X_test)
 cm = confusion_matrix(y_test, y_pred)
 accuracy = accuracy_score(y_test, y_pred)
-Neural Network Model
-Data Preprocessing
-Similar to the Logistic Regression model, the data is loaded and split into training and test sets. The features are scaled using StandardScaler.
+<br>
 
-python
-Copy code
+
+**Neural Network Model**<br>
+<br>
+**Data Preprocessing**<br>
+<br>
+Similar to the Logistic Regression model, the data is loaded and split into training and test sets. The features are scaled using StandardScaler.
+<br>
 from pandas import read_csv
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -72,40 +78,51 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 scaler = StandardScaler()
 X_train_scaled = scaler.transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-Model Architecture
-A neural network is built using the Keras Sequential API. The model consists of three dense layers.
+X_test_scaled = scaler.transform(X_test)<br>
+<br>
 
-python
-Copy code
+
+**Model Architecture**<br>
+<br>
+A neural network is built using the Keras Sequential API. The model consists of three dense layers.
+<br>
+
 from keras.models import Sequential
 from keras.layers import Dense
 
 model = Sequential()
 model.add(Dense(128, input_dim=X_train_scaled.shape[1], activation='relu'))
 model.add(Dense(64, activation='relu'))
-model.add(Dense(1, activation='linear'))
-Model Training
+model.add(Dense(1, activation='linear'))<br>
+<br>
+
+
+**Model Training**<br>
+<br>
 The model is trained for 100 epochs with a validation split of 20%.
-
-python
-Copy code
+<br>
 history = model.fit(X_train_scaled, y_train, validation_split=0.2, epochs=100, verbose=0)
-Model Evaluation
+
+<br>
+**Model Evaluation**<br>
+<br>
 The model's performance is evaluated using accuracy, confusion matrix, and custom rounding for predictions.
-
-python
-Copy code
+<br>
 from sklearn.metrics import confusion_matrix, accuracy_score
-
 rounded_predictions = np.array([custom_round(pred) for pred in predictions])
 conf_matrix = confusion_matrix(y_test, rounded_predictions)
 accuracy = accuracy_score(y_test, rounded_predictions)*100
-Results
-Logistic Regression: The model performed well on the test set, providing good accuracy and precision.
-Neural Network: The neural network model achieved comparable results, showing the power of deep learning even in relatively small datasets.
-Contributing
+
+<br>
+**Results**<br>
+<br>
+**Logistic Regression**: The model performed well on the test set, providing good accuracy and precision.
+**Neural Network: **The neural network model achieved comparable results, showing the power of deep learning even in relatively small datasets.
+<br>
+
+
+**Contributing**<br>
+<br>
 Contributions to this project are welcome. Feel free to submit a pull request or raise an issue.
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
