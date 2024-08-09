@@ -18,7 +18,7 @@ To run this project, ensure you have Python installed. You can install the requi
 pip install numpy pandas scikit-learn keras matplotlib
 
 
-#**Logistic Regression Model**<br>
+**Logistic Regression Model**<br>
 <br>
 **Data Preprocessing**<br>
 The dataset is loaded using pandas, and then split into features (X) and the target variable (y). The data is further split into training and test sets using an 80-20 split.
@@ -103,7 +103,7 @@ The model is trained for 100 epochs with a validation split of 20%.
 <br>
 history = model.fit(X_train_scaled, y_train, validation_split=0.2, epochs=100, verbose=0)
 
-<br>
+
 **Model Evaluation**<br>
 <br>
 The model's performance is evaluated using accuracy, confusion matrix, and custom rounding for predictions.
@@ -113,7 +113,7 @@ rounded_predictions = np.array([custom_round(pred) for pred in predictions])
 conf_matrix = confusion_matrix(y_test, rounded_predictions)
 accuracy = accuracy_score(y_test, rounded_predictions)*100
 
-<br>
+
 **Results**<br>
 <br>
 **Logistic Regression**: The model performed well on the test set, providing good accuracy and precision.
